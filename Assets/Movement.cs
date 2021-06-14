@@ -1,70 +1,70 @@
 
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityStandardAssets.CrossPlatformInput;
+
 public class Movement : MonoBehaviour
 {
-    [SerializeField]
-    float speed;
-    float xRange = 80.0f;
-    float yRange =19.0f;
-    [SerializeField]
-    float positionrotationFactor = 5.0f;
-    [SerializeField]
-    float controlRotationFactor = 1.0f;
-    [SerializeField]
-    float positionyawFactor = 5.0f;
-    [SerializeField]
-    float controlRollFactor = 5.0f;
+    [Header("General")]
+    [SerializeField] float speed;
+ float xRange = 80f;
+ float yRange = 19f;
+
+    [Header("Position Controlled")]
+    [SerializeField] float positionpitchFactor = 5.0f;
+    [SerializeField] float controlpitchFactor = 5f;
+    [SerializeField] float positionyawFactor = 5f;
+    [SerializeField] float controlrollFactor = 5f;
 
     float xOffset, yOffset;
-
-
-    void Start()
-    {
-
-    }
-
+    bool isPlayerActive = true;
     // Update is called once per frame
     void Update()
     {
-        PlayerPosition();
-        PlayerRotation();
+        if (isPlayerActive)
+        {
+            playerPosition();
+            playerRotation();
+        }
     }
-
-    private void PlayerRotation()
+    void OnPlayerDeath()
     {
-        // 
-        //float xRotation = transform.localRotation.x * rotationFactor;
-        float yRotation = transform.localRotation.y * positionrotationFactor;
-        float pitchControlValue = yOffset * controlRotationFactor;
+        isPlayerActive = false;
+        //Debug.Log("Received message");
+    }
+    private void playerRotation()
+    {
+        //float xRotation = transform.localPosition.x * rotationFactor;
+        float yRotation = transform.localPosition.y * positionpitchFactor;
+        float pitchControlValue = yOffset * controlpitchFactor;
         float pitch = yRotation + pitchControlValue;
 
-        float yaw = transform.localPosition.x + positionyawFactor;
-        // float zRotation = transform.localRotation.z * rotationFactor ;
 
-        float roll = xOffset + controlRollFactor;
+        float yaw = transform.localPosition.x * positionyawFactor;
+
+        float roll = xOffset * controlrollFactor;
+
         transform.localRotation = Quaternion.Euler(pitch, yaw, roll);
     }
-
-    private void PlayerPosition()
+    private void playerPosition()
     {
         float horizontalMove = CrossPlatformInputManager.GetAxis("Horizontal");
-        xOffset = horizontalMove * speed * Time.deltaTime;
+
+        float xOffset = horizontalMove * speed * Time.deltaTime;
 
         float verticalMove = CrossPlatformInputManager.GetAxis("Vertical");
-        yOffset = verticalMove * speed * Time.deltaTime;
 
+        float yOffset = verticalMove * speed * Time.deltaTime;
 
-        float xRawPos = transform.localPosition.x + xOffset;
-        float yRawPos = transform.localPosition.y + yOffset;
+        float XrawPos = transform.localPosition.x + xOffset;
 
-        float clampedXPos = Mathf.Clamp(xRawPos, -xRange, xRange);
-        float clampedYPos = Mathf.Clamp(yRawPos, -yRange, yRange);
+        float YrawPos = transform.localPosition.y + yOffset;
 
-        transform.localPosition = new Vector3(clampedXPos, clampedYPos, transform.localPosition.z);
+        float clampedXpos = Mathf.Clamp(XrawPos, -xRange, xRange);
+
+        float clampedYpos = Mathf.Clamp(YrawPos, -yRange, yRange);
+
+        transform.localPosition = new Vector3(clampedXpos, clampedYpos, transform.localPosition.z);
     }
-
 }
