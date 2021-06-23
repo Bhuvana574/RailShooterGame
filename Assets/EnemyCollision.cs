@@ -11,7 +11,7 @@ public class EnemyCollision : MonoBehaviour
     }
     private void OnParticleCollision(GameObject other)
     {
-        //Debug.Log("particle collision " + gameObject.name);
+        Debug.Log("particle collision " + gameObject.name);
 
         Destroy(gameObject);
     }

@@ -13,6 +13,6 @@ public class CollsionHandler : MonoBehaviour
     { 
         Debug.Log("Player is dead");
         //SendMessage("OnPlayerDeath");
-        //deathEffect.SetActive(true);
+        deathEffect.SetActive(true);
     }
 }

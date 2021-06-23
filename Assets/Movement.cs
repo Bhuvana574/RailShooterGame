@@ -9,7 +9,7 @@ public class Movement : MonoBehaviour
     [Header("General")]
     [SerializeField] float speed;
  float xRange = 80f;
- float yRange = 19f;
+ float yRange =10f;
 
     [Header("Position Controlled")]
     [SerializeField] float positionpitchFactor = 5.0f;
